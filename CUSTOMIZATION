@@ -1,0 +1,67 @@
+CUSTOMIZATION
+
+Two main modes of customization:
+ 1) strings.h - all standard/default BBS-related strings are in here.
+      Someday we'll move this all to a configuration file or something.
+
+ 2) Menus - Menus are a proprietary ACS-type system.  These are all handled
+      through data/menus.dat; someday an internal configuration system?
+
+The obvious utility of #2 is the ability to make whichever keys you like call
+whichever BBS functions you see fit, and to group functions into logical sets
+to your own tastes.  Menus can invoke other menus through the use of the 'LM'
+mnemonic, but as of right now there is no defined method of "returning" to
+a previous menu; it must be loaded via mnemonic as though it were that menu's
+first visit.  Long term, for reasons hinted at in the below plugin section,
+there will need to be a mechanism to return to a parent menu while maintaining
+current menu state - without invoking the parent menu "fresh."
+
+ALTERNATIVE METHOD OF CUSTOMIZATION:
+
+For the really adventurous, there's plugins.  Plugins can be written in any
+language that you can compile to a dynamic shared object and that can call
+the symbols exported by the core BBS.  Plugins extend the Menu subsystem by
+providing callbacks for menu functions, as well as Menu-called procedures,
+and more benignly they can define new MCI codes.
+
+To wit, Menus binds keys to mnemonics.  The BBS then looks up the callback
+for the given mnemonic, and calls it, passing in any additional parameters
+specified in the menu command definition.  Thus, you can add custom BBS
+functionality at any time, to any menu, by simply binding a key to whatever
+mnemonics you choose.
+
+Further, when a Menu is initially loaded by way of the 'LM' mnemonic, every
+mnemonic bound to keys starting with '**' are executed in order of definition.
+This makes it possible to build a "menu" that functions is a virtual script,
+calling any number of internal or plugin-provided procedures in-sequence as
+trivial as creating a new menu, and binding it.
+
+The core of a plugin is the plugin_register() function, which the BBS will
+call once per plugin, at runtime.  Your plugin_register() function should
+then make all necessary calls to plugin_add() to configure its command codes
+and callbacks.
+
+In terms of MCI codes, your plugin needs to have a minimum of two things:
+ 1) The plugin_register() function, as per any other plugin, that places
+    calls to mci_register() for each new MCI code and defines their
+    associated callback function, and
+ 2) A function that to be called when a registered MCI code is called.
+
+The specifics are up to you - when the BBS calls your MCI handler it will
+pass in the MCI code that triggered the call; this way you can have one
+function handle all of your MCI codes, or you could have multiple functions -
+one per MCI code, one per code type, etc.  Be creative.
+
+In both cases, because of the possibility to share plugins amongst systems,
+it is recommended that no plugin register any commands or MCI codes beginning
+with the letter 'Z' - this way there is guaranteed an open space for SysOps
+to develop their own plugins without having to worry about colliding with any
+other modules they wish to load.  Further, if you develop a plugin you wish
+to distribute, please visit <Terminus BBS> to arrange for mnemonic
+coordination.  In this manner, we can maximize command-space distribution
+while minimizing collisions.  Of course, if you ever run into a plugin that
+conflicts with another plugin you're already using, you can manually remap
+the mnemonics in the offending module's plugin_register() function, and use
+your new mnemonics when binding the functions to your menus.  But this is
+messy, and not recommended.
+

@@ -1,0 +1,101 @@
+0. WhyWhoWhatNow?
+
+Way back in my early computing days, my dad introduced me to a modem and my
+curiosity introduced me to the BBS scene.  After awhile I developed an
+interest in running my own system, settled on WWIV as the system of choice,
+eventually obtained the source code, and taught myself C.  Now, you can say
+what you will about both WWIV and it's source code quality, and while I
+might have spent most of my time running Renegade, the experience I gained
+dabbling in WWIV's C source provided the foundation for my explorations into
+Linux, and ultimately helped secure my career.
+
+So, when it came time to reinvigorate my C chops, it seemed only natural to
+follow up with a BBS.  Purely as an academic exercise.  A BBS in and of
+itself provides a solid platform for projects in many different realms of
+computer science, and I have a soft-spot for the glory days of ANSI art, and
+thus was Terminus born.
+
+In the source code, you'll still see a lot of WWIV and Renegade influences.
+This is largely due to my experience with the WWIV source (and what went into
+making changes to it such that it suited my needs), and reverse
+engineering/generaly use of Renegade (and what changes I would've liked to be
+able to make, to suit my needs).  If you're flipping through the source and
+see something you don't like, or think you know how to do better, feel free
+to send me an email (you can find my contact info in the README file).  Or,
+better yet, make the change yourself and email me the diff.  I love
+self-starters! :)
+
+
+1. Goals
+
+Modern (telnet) BBSing is an interesting endeavor in subtle repetition.
+There are many BBSes avaialble to login to, but the majority seem to be
+running Synchronet and various minor modifications, with minimal local
+activity.  After logging into a number of these, making note of their varying
+"login" and "welcome" screens, then proceding to read the same messages on
+the same networked forums as I had on every previous Synchronet system, I
+realized there needed to be a more compelling reason to use any given system.
+Haunting the Chapel stands out notably in my mind - a hand-coded custom
+system (now available to the general public as Enthral) with some honest
+local activity.  Something about that stood out, made me take note.
+
+When I started working on Terminus, my aim was to address what I had
+discovered to be the main problem in retaining users: Differentiation.
+What makes a system unique, what drives a user to login to any given system,
+particularly when the majority of content is syndicated, and thus readily
+available at any given time from any given system?
+
+Terminus aims to address this in multiple ways:
+ * Full custom package.  This is a bullshit answer, because as more people
+   download and install Terminus, the Terminus core will become diluted and
+   this undifferentiated, but for now there's only one.  That's pretty
+   unique.
+
+ * Plugins.  Terminus has combined an ACS-style menuing system with a dynamic
+   library loading system that allows SysOps to build their own modules and
+   define system behavior in unprecedented ways.
+
+ * Operator-Driven content.  This isn't a software thing, it's a community
+   thing.  It might have been enough in the old days for a SysOp to seed new
+   forums and then let the topics sustain themselves, but in today's
+   environment it's absolutely necessary to actively fuel discussion.
+   Further, there needs to be a partnership with the userbase, a sense of
+   ownership and control in the community.  Participation should be
+   rewarding, not a chore.
+
+Of course, I have a few tricks up my sleeves.  While Terminus may essentially
+be released as opensource, I'll be keeping the core "identity" plugins under
+wraps; sorry, but that first bullet point above is pretty important, and one
+of the best ways of helping to insure any given BBS stands on its own is to
+make sure that the bits which make that BBS unique don't get replicated on
+every other BBS.  So, Terminus will come with all of the basic, core BBS bits
+(as they're developed), but you're on your own for accessories.  Then again,
+my target demographic wouldn't have it any other way.... :)
+
+
+2. The Future
+
+Because every good project needs some sort of future plans, right?  To help
+ensure longevity or something?
+
+Here's a few of mine:
+ * Script language.  Plugins are great, but this would be awesome.
+ * Network interfacing.  If users can get their fix of everything in one
+   spot, why not let them?
+ * Internet Email.  Because reading and composing all of my email from one
+   place would rock.
+ * Doors.  TradeWars 2002 was always one of my favorite games.
+ * SSH support.  I'm all about security, so if you can SSH in instead of
+   using Telnet, that's a win, right?
+ * Twitter.  Sure, it's dumb, but I think it'd be kinda fun to pump
+   node-state changes to Twitter, so we can all see when someone logs on, or
+   if a node crashes.
+
+Conspicuously absent from this list is Web integration and FTP support.
+Quite frankly, if you want to browse a forum from your web browser, there are
+already plenty of them out there.  If you want/need files, again, there's a
+whole internet filled with them.  And they're easier to get at than they would
+be through Terminus.  I guess if there's sufficient demand, I may add file
+support at some point.  We'll see.
+
+
