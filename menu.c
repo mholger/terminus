@@ -17,7 +17,7 @@ void menu( int dl )
 
 	memset( s, '\0', sizeof( s ));
 	if( !expert )
-		outfile( thismenu.fn );
+		helpmenu( 0, NULL );
 
 	outstr( thismenu.prompt );
 
@@ -41,7 +41,7 @@ int onekey( char *choices, char *throbsequence )
 	if( throbsequence && ansi )
 	{
 		throbber = toktok( throbsequence, '', &throbs );
-
+		ithrob = throbs - 1;
 		c1 = c2 = clock();
 	}
 
@@ -90,6 +90,7 @@ void mmkey( int dl, char *cmd )
 {
 	char cmd1[51], cmd2[81], c;
 	static char **throbber;
+
 	int i, ithrob = 0, throbs = 0;
 	clock_t c1, c2;
 
@@ -97,10 +98,11 @@ void mmkey( int dl, char *cmd )
 	memset( cmd2, '\0', sizeof( cmd2 ));
 
 	rflush();
+
 	if(( thismenu.flags & MENU_THROBBER ) && ansi )
 	{
 		throbber = toktok( thismenu.throbsequence, ' ', &throbs );
-
+		ithrob = throbs-1;
 		c1 = c2 = clock();
 	}
 
@@ -174,7 +176,7 @@ void mmkey( int dl, char *cmd )
 				}
 				if( kbhit() )
 					c = getkey();
-			} while(( c <= ' ' || c > 126 ) && ( c != 8 && c != 127 ) && !_hangup );
+			} while(( c <= ' ' || c > 126 ) && ( c != 8 && c != 127 ) && !_hangup && !_timeout );
 
 			c = upcase( c );
 			if( c == 8 || c == 127 )
@@ -206,6 +208,7 @@ void mmkey( int dl, char *cmd )
 				cmd1[2] = 0;
 				resetcolor();
 				outchr( c );
+				outstr( "|NL" );
 				sprintf( cmd, "%s", cmd1 );
 				return;
 			}
@@ -287,17 +290,12 @@ void menu_add_command( char *menu, char *cmd, menukeyrec_t *mk )
 void helpmenu( int argc, char **argv )
 {
 	int k = 0;
-	char fnascii[255], fnansi[255], fn[255];
-
-	sprintf( fn, "%s/%s", cfg.textpath, thismenu.fn );
-	sprintf( fnascii, "%s/%s.txt", cfg.textpath, thismenu.fn );
-	sprintf( fnansi, "%s/%s.ans", cfg.textpath, thismenu.fn );
 
 	// If there exists an exact match to the menu's fn - use it. Period.
 	// Else, if an ANSI variation exists, and the users has ANSI support
 	// enabled, we use that one.  Last (custom) resort - ASCII.
 	// If none of the above succeeds, use the built-in menu strings...
-	if( !outfile( fn ))
+	if( !outfile( thismenu.fn ))
 		while( thismenu.keys[k].key[0] )
 		{
 			if( strcmp( thismenu.keys[k].key, "**" ) && thismenu.keys[k].key[0] != '\\' )

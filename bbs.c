@@ -18,6 +18,9 @@ int main( int argc, char **argv )
 	char *lmargs = "MAIN";
 	/* Need getopts in here...? */
 
+	_hangup = 0;
+	_timeout = 0;
+
 	/* These need implementation...! */
 	//loadconfig( &cfg );
 	configinit();	// Load/process system configuration.
@@ -52,7 +55,7 @@ int main( int argc, char **argv )
 
 	loadmenu( 1, &lmargs );
 	// Main Loop
-	while( !_hangup )
+	while( !_hangup && !_timeout )
 	{
 		//menu( state.menu );
 		menu( 1 );

@@ -19,11 +19,11 @@ void configinit( void )
 	strcpy( t.bbsname, "Terminus" );
 	strcpy( t.sysop, "Radix" );
 	strcpy( t.email, "radix@terminusbbs.com" );
-	strcpy( t.datapath, "/home/bbs/terminus/data" );
-	strcpy( t.pluginpath, "/home/bbs/terminus/plugins" );
-	strcpy( t.logpath, "/home/bbs/terminus/logs" );
-	strcpy( t.textpath, "/home/bbs/terminus/text" );
-	strcpy( t.tmppath, "/home/bbs/terminus/temp" );
+	strcpy( t.datapath, "./data" );
+	strcpy( t.pluginpath, "./plugins" );
+	strcpy( t.logpath, "./logs" );
+	strcpy( t.textpath, "./text" );
+	strcpy( t.tmppath, "./temp" );
 	
 	t.flags &= (SYS_CLOSED);
 	t.nodes = 8;
@@ -71,6 +71,13 @@ void menuinit( void )
 	mk.order = 5;
 	m.keys[mk.order] = mk;
 
+	strcpy( mk.key, "X" );
+	strcpy( mk.title, "eXpert Mode" );
+	strcpy( mk.command, "UX" );
+	strcpy( mk.menutext, "|12[|14 X|12] |14e|15X|14p|06ert |15M|14o|06de" );
+	mk.order = 12;
+	m.keys[mk.order] = mk;
+
 	strcpy( mk.key, "VERSION" );
 	strcpy( mk.title, "Version" );
 	strcpy( mk.command, "SV" );
@@ -102,21 +109,21 @@ void menuinit( void )
 	strcpy( mk.key, "COLORS" );
 	strcpy( mk.title, "Color Demo" );
 	strcpy( mk.command, "A0" );
-	strcpy( mk.menutext, "|12[|14COLORS|12] |15C|14o|06lor |15D|14e|06mo" );
+	strcpy( mk.menutext, "|12[|14 COLORS|12] |15C|14o|06lor |15D|14e|06mo" );
 	mk.order = 8;
 	m.keys[mk.order] = mk;
 
 	strcpy( mk.key, "RAWKEY" );
 	strcpy( mk.title, "Raw Key Test" );
 	strcpy( mk.command, "A1" );
-	strcpy( mk.menutext, "|12[|14RAWKEY|12] |15R|14a|06w |15K|14e|06y |15T|14e|06st" );
+	strcpy( mk.menutext, "|12[|14 RAWKEY|12] |15R|14a|06w |15K|14e|06y |15T|14e|06st" );
 	mk.order = 9;
 	m.keys[mk.order] = mk;
 
 	strcpy( mk.key, "TWEET" );
 	strcpy( mk.title, "Tweet!" );
 	strcpy( mk.command, "!T" );
-	strcpy( mk.menutext, "|12[|14 TWEET|12] |15T|14w|06eet" );
+	strcpy( mk.menutext, "|12[|14  TWEET|12] |15T|14w|06eet" );
 	mk.order = 7;
 	m.keys[mk.order] = mk;
 
@@ -208,6 +215,7 @@ void plugininit( void )
 	plugin_add( "H0", &helpmenu, 0 );
 	plugin_add( "A0", &ansidemo, 0 );
 	plugin_add( "A1", &rawkey, 0 );
+	plugin_add( "UX", &experttoggle, 0 );
 
 	/* And here we register the plugins, that plugin_add() their own routines */
 	logger( 9, "plugininit(): Scanning '%s' for plugins...", cfg.pluginpath );

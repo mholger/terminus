@@ -73,6 +73,7 @@ __EXTERN__ mcicoderec_t *mcicode_head;
 __EXTERN__ mcicoderec_t *mcicode_tail;
 __EXTERN__ void* bbsptr[MAXMEM];
 
-__EXTERN__ int ansi, fgcolor, bgcolor, hicolor, expert, okcolor, lines_listed, _echo, linect, _hangup, mciok;
+__EXTERN__ int ansi, fgcolor, bgcolor, hicolor, expert, okcolor, lines_listed, _echo, linect, mciok;
+__EXTERN__ int _hangup, _timeout;
 
 #endif // __VARS_H

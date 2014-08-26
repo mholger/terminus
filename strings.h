@@ -5,9 +5,12 @@
 
 char strings[MAXSTRINGS][512] = {
 	"XX\0",									// S_HIDDEN_FILL
-	" ±\0",									// S_MPL_FILL
-	"|08[|20|12\0",							// S_MPL_PREFIX
-	"|16|08]|20|15\0",						// S_MPL_SUFFIX
+	//" ±\0",									// S_MPL_FILL
+	" .\0",									// S_MPL_FILL
+	//"|08[|20|12\0",							// S_MPL_PREFIX
+	//"|16|08]|20|15\0",						// S_MPL_SUFFIX
+	"|08[|15\0",							// S_MPL_PREFIX
+	"|08]|15\0",						// S_MPL_SUFFIX
 	"|12\0",									// S_MPL_FILL_COLOR
 	"|15\0",									// S_MPL_TEXT_COLOR
 	"Detecting ANSi...\0",					// S_DETECT_ANSI
@@ -24,7 +27,7 @@ char strings[MAXSTRINGS][512] = {
 	"|08[|15CR|07/|15Y|08=|15Yes|08, |15N|08=|15No|08, |15Q|08=|15Quit|08] \0",// S_PROMPT_YESNOQUIT
 	"|08[|15CR|07/|15N|08=|15No|08, |15Y|08=|15Yes|08] \0",// S_PROMPT_NOYES
 	"|08[|15CR|07/|15N|08=|15No|08, |15Y|08=|15Yes|08, |15Q|08=|15Quit|08] \0",// S_PROMPT_NOYESQUIT
-	"|07.|07o|07O|07o\0",				// S_THROBBER_DEFAULT
+	"|07-|07=|07+|07=\0",				// S_THROBBER_DEFAULT
 	"|05[PAUSE]\0",					// S_PROMPT_PAUSE_BASIC
 	//"|08-|08-|07-|08-|07-|15-|08[-|07-|15-|08[ -|07-|15-|08[ |08-|07-|15-|14pa|06us|08e>",			// S_PROMPT_PAUSE_THROB
 	"|08 [ pause ]|08 [ |15p|08ause ]|08 [ |15pa|08use ]|08 [ |07p|15au|08se ]|08 [ |07pa|15us|08e ]|08 [ |07pau|15se|08 ]|08 [ p|07aus|15e|08 ]|08 [ pa|07use|08 ]|08 [ pau|07se|08 ]|08 [ paus|07e|08 ]|08 [ pause ]|08 [ pause ]|08 [ pause ]|08 [ pause ]|08 [ pause ]|08 [ pause ]\0",

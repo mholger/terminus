@@ -79,6 +79,7 @@ void	freering( void );
 /* user.c - User management functions */
 int		loaduser( int un, userrec_t *u );
 int		writeuser( int un, userrec_t *u );
+void		experttoggle( int argc, char **argv );
 
 /* userio.c - Functions for interacting with Users */
 /*	Higher-level functions built on com.c */

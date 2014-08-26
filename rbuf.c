@@ -43,7 +43,7 @@ void stash( int c )
 	if(( ring.iptr != ring.optr ) || ( ring.buf[ ring.iptr ] == 0 ))
 	{
 		ring.buf[ ring.iptr ] = c;
-		ring.iptr = ( ++ring.iptr % ring.sz );
+		ring.iptr = ( (ring.iptr + 1) % ring.sz );
 	}
 }
 
@@ -57,7 +57,7 @@ int unstash( void )
 		c = ring.buf[ ring.optr ];
 		//ring.buf[ ring.optr ] = '\0';
 		ring.buf[ ring.optr ] = 0;
-		ring.optr = ( ++ring.optr % ring.sz );
+		ring.optr = ( (ring.optr + 1) % ring.sz );
 	}
 
 	return( c );

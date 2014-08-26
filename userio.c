@@ -601,6 +601,7 @@ int nyq( void )
 	return( yesno( 3 ));
 }
 
+/* rawkey() is a test routine - don't expect it to be useful */
 void rawkey( int argc, char **argv )
 {
 	int ch;

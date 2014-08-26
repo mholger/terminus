@@ -59,3 +59,22 @@ int writeuser( int un, userrec_t *u )
 	return 1;
 }
 
+int finduser( char *uname )
+{
+	int un = 0;
+	userrec_t u;
+
+	while( loaduser( un, &u ) && !un )
+	{
+		if( !strcmp( uname, u.username ))
+			un = u.userid;
+	}
+
+	return( un );
+}
+
+void experttoggle( int argc, char **argv )
+{
+	expert = !expert;
+}
+
