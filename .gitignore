@@ -3,3 +3,4 @@
 *.so
 bbs
 logs/*
+data/*
