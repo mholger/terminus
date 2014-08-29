@@ -118,19 +118,20 @@ int login( void )
 	int npcount = 0;
 	userrec_t u;
 
-	while( !checkpass( up, u.password ) && npcount < 3 )
+	while( !strcmp( "", un ) && !checkpass( up, u.password ) && npcount < 3 )
 	{
 		npcount++;
 		outstr( strings[S_MSG_LOGIN] );
 		mpl( 20 );
 		inputwc( un, sizeof( u.username ), 20 );
+
 		if( !strcmp( un, "NEW" ))
 		{
 			newuser();
 			strcpy( un, thisuser.username );
 		}
 
-		if( !loaduser( finduser( un ), &u ))
+		if( !strcmp( "", un ) || !loaduser( finduser( un ), &u ))
 		{
 			logger( 9, "login(): Couldn't find user '%s'", un );
 		}
@@ -149,6 +150,9 @@ int login( void )
 		outstrnl( strings[S_MSG_SORRY_BYE] );
 		bbsexit( 0 );
 	}
+
+	if( u.flags && USER_SYSOP )
+		logger( 1, "login(): SYSOP ON DECK" );
 
 	return( 1 );
 }

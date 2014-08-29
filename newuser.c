@@ -60,6 +60,14 @@ int newuser( void )
 	}
 
 	strcpy( u.password, s );
+
+	// User #1 - SysOp
+	if( u.userid == 1 )
+	{
+		logger( 1, "newuser(): SysOp Created - %s", u.username );
+		u.flags |= USER_SYSOP;
+	}
+
 	thisuser = u;
 
 	writeuser( thisuser.userid, &thisuser );

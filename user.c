@@ -31,9 +31,13 @@ int loaduser( int un, userrec_t *u )
 
 	if( un > 0 && lseek( uf, sizeof( userrec_t ) * (un - 1), SEEK_SET ) != -1 )
 	{
-		logger( 4, "loaduser(%i) - found user", un );
-		read( uf, (void *)tu, sizeof( userrec_t ));
-		memcpy( u, tu, sizeof( userrec_t ));
+		if( read( uf, (void *)tu, sizeof( userrec_t )))
+		{
+			logger( 4, "loaduser(%i) - found user", un );
+			memcpy( u, tu, sizeof( userrec_t ));
+		}
+		else
+			return -1;
 	}
 	else	// Bad User!
 	{
