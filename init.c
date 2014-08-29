@@ -24,6 +24,7 @@ void configinit( void )
 	strcpy( t.logpath, "./logs" );
 	strcpy( t.textpath, "./text" );
 	strcpy( t.tmppath, "./temp" );
+	strcpy( t.menu, "main" );
 	
 	t.flags &= (SYS_CLOSED);
 	t.nodes = 8;
@@ -75,7 +76,7 @@ void menuinit( void )
 	strcpy( mk.title, "eXpert Mode" );
 	strcpy( mk.command, "UX" );
 	strcpy( mk.menutext, "|12[|14 X|12] |14e|15X|14p|06ert |15M|14o|06de" );
-	mk.order = 12;
+	mk.order = 11;
 	m.keys[mk.order] = mk;
 
 	strcpy( mk.key, "VERSION" );
@@ -128,7 +129,7 @@ void menuinit( void )
 	m.keys[mk.order] = mk;
 
 	strcpy( mk.key, "\\" );
-	mk.order = 11;
+	mk.order = 12;
 	m.keys[mk.order] = mk;
 
 	thismenu = m;

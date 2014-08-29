@@ -133,7 +133,7 @@ int detectansi( void )
 	ansi = 0;
 
 	memset( buf, '\0', 25 );
-	outstr( "%s", strings[S_DETECT_ANSI] );
+	outstr( "%s", strings[S_MSG_DETECT_ANSI] );
 	outstr( "\x1b[5n" );	// Request device status
 	
 	time( &clock1 );
@@ -155,7 +155,7 @@ int detectansi( void )
 				if( !strcmp( buf, "\x1b[0n" ))
 				{
 					ansi = 1;
-					outstr( "%s", strings[S_ANSI_DETECTED] );
+					outstr( "%s", strings[S_MSG_ANSI_DETECTED] );
 					resetcolor();
 				}
 			}
@@ -185,7 +185,7 @@ int detectansi( void )
 			if( strstr( buf, "\x1b[" ) != NULL ) /* good enough ... */
 			{
 				ansi = 1;
-				outstr( "%s", strings[S_ANSI_DETECTED] );
+				outstr( "%s", strings[S_MSG_ANSI_DETECTED] );
 				resetcolor();
 			}
 			deltaclock = ( time( &clock2 ) - clock1 );
@@ -193,7 +193,7 @@ int detectansi( void )
 	}
 
 	if( !ansi )
-		outstr( "%s\n", strings[S_NO_ANSI] );
+		outstr( "%s\n", strings[S_MSG_NO_ANSI] );
 
 	return( ansi );
 }
@@ -206,7 +206,7 @@ void confirmansi()
 {
 	int c;
 
-	outstr( strings[S_KEEP_ANSI] );
+	outstr( strings[S_MSG_KEEP_ANSI] );
 	c = yesno( 0 );
 	switch( c )
 	{

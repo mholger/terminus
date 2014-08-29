@@ -1,7 +1,7 @@
 
 CC = gcc
 CFLAGS = -g -Wall
-OBJECTS = ansi.o bbs.o com.o init.o logging.o menu.o msgbase.o plugins.o rbuf.o user.o userio.o utility.o version.o
+OBJECTS = ansi.o bbs.o com.o init.o logging.o menu.o msgbase.o newuser.o plugins.o rbuf.o user.o userio.o utility.o version.o
 INCFLAGS = 
 LDFLAGS = -Wl,-export-dynamic,-rpath,/usr/local/lib -ldl -lpthread
 #LIBS = -lncurses

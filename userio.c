@@ -16,7 +16,7 @@
 
 void outchr( char c ) /* userio.c */
 {
-	if( c >= 33 && c <= 126 )
+	if(( c >= 33 && c <= 126 ) || ( c == ' ' ))
 		_echo ? out1ch( c ) : out1ch( strings[S_HIDDEN_FILL][ansi] );
 	else
 		out1ch( c );
@@ -32,6 +32,19 @@ void outstr( char *fmt, ... ) /* userio.c */
 	va_end(ap);
 
 	out1str( s );
+}
+
+void outstrnl( char *fmt, ... ) /* userio.c */
+{
+	va_list ap;
+	char s[4096];
+
+	va_start(ap, fmt);
+	vsprintf(s, fmt, ap);
+	va_end(ap);
+
+	out1str( s );
+	pnl();
 }
 
 void out1str( char *s )
@@ -198,6 +211,7 @@ void mpl( int n ) /* userio.c */
 	if( ansi )
 	{
 		outstr( strings[S_MPL_PREFIX] );
+		outstr( strings[S_MPL_FILL_COLOR] );
 		while( x++ < n )
 			outchr( strings[S_MPL_FILL][ansi] );
 		outstr( strings[S_MPL_SUFFIX] );
@@ -236,6 +250,36 @@ void inputwl( char *s, int maxlen, int window )
 void inputwc( char *s, int maxlen, int window )
 {
 	input1( s, maxlen, 2, window );
+}
+
+void prompt( char *pstr, char *s, int maxlen, int window )
+{
+	outstr( pstr );
+	mpl( window );
+	inputw( s, maxlen, window );
+}
+
+void promptl( char *pstr, char *s, int maxlen, int window )
+{
+	outstr( pstr );
+	mpl( window );
+	inputwl( s, maxlen, window );
+}
+
+void promptc( char *pstr, char *s, int maxlen, int window )
+{
+	outstr( pstr );
+	mpl( window );
+	inputwc( s, maxlen, window );
+}
+
+void promptp( char *pstr, char *s, int maxlen, int window )
+{
+	outstr( pstr );
+	mpl( window );
+	_echo = 0;
+	inputw( s, maxlen, window );
+	_echo = 1;
 }
 
 void input1( char *s, int maxlen, int mode, int window ) /* userio.c */
@@ -567,10 +611,35 @@ void pausescr( void ) /* userio.c */
 
 int yesno( char mode )
 {
-	int c;
+	int c,x;
+	char sbuf[15];
 
-	outstr( strings[S_PROMPT_YESNO] );
-	c = onekey( "YN", strings[S_THROBBER_DEFAULT] );
+	memset( sbuf, '\0', sizeof( sbuf ) + 1);
+
+	switch( mode )
+	{
+		case 0:
+			x = S_PROMPT_YESNO;
+			sprintf( sbuf, "%s", "YN" );
+			break;
+		case 1:
+			x = S_PROMPT_NOYES;
+			sprintf( sbuf, "%s", "NY" );
+			break;
+		case 2:
+			x = S_PROMPT_YESNOQUIT;
+			sprintf( sbuf, "%s", "YNQ" );
+			break;
+		case 3:
+			x = S_PROMPT_NOYESQUIT;
+			sprintf( sbuf, "%s", "NYQ" );
+			break;
+	}
+
+	logger( 9, "mode = %i, sizeof(sbuf) = %i, sbuf = '%s', str = '%s'", mode, sizeof( sbuf ), sbuf, strings[x] );
+	outstr( strings[x] );
+	c = onekey( sbuf, strings[S_THROBBER_DEFAULT] );
+
 	resetcolor();
 
 	switch( c )
@@ -581,9 +650,18 @@ int yesno( char mode )
 		case 'N':
 			outstr( strings[S_NO] );
 			break;
+		case 'Q':
+			outstr( strings[S_QUIT] );
+			break;
 	}
+
 	resetcolor();
 	return( c );
+}
+
+int _yn( void )
+{
+	return( yesno( 0 ));
 }
 
 int ny( void )

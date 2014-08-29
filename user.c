@@ -18,29 +18,32 @@ int loaduser( int un, userrec_t *u )
 	userrec_t *tu;
 
 	u->userid = 0;
-	sprintf( tmp, "%susers.dat", cfg.datapath );
+	sprintf( tmp, "%s/users.dat", cfg.datapath );
 	uf = open( tmp, O_CREAT | O_RDONLY | O_SYNC, S_IRUSR | S_IWUSR );
-	if( uf != 0 )
+	if( uf == -1 )
 	{
 		//something bad happened
-		return -1;
+		logger( 1, "loaduser(%i) open(3) failed: %i", un, errno );
+		bbsexit( 200 );
 	}
 	tu = malloc( sizeof( userrec_t ));
 	memset( tu, '\0', sizeof( userrec_t ));
 
-	if( un > 0 )
+	if( un > 0 && lseek( uf, sizeof( userrec_t ) * (un - 1), SEEK_SET ) != -1 )
 	{
-		lseek( uf, sizeof( userrec_t ) * ( un - 1 ), SEEK_SET );
+		logger( 4, "loaduser(%i) - found user", un );
 		read( uf, (void *)tu, sizeof( userrec_t ));
 		memcpy( u, tu, sizeof( userrec_t ));
 	}
-	else
-		while( read( uf, (void *)tu, sizeof( userrec_t )) != -1 )
-			if( strcmp( tu->username, u->username ) == 0 )
-				memcpy( u, tu, sizeof( userrec_t ));
+	else	// Bad User!
+	{
+		logger( 4, "loaduser(%i) - bad user", un );
+		return -1;
+	}
 
 	close( uf );
 	free( tu );
+	logger( 3, "loaduser(%i)->[%i,%s]", un, u->userid, u->username );
 	return u->userid;
 }
 
@@ -49,28 +52,68 @@ int writeuser( int un, userrec_t *u )
 	int uf;
 	char tmp[81];
 
-	sprintf( tmp, "%susers.dat", cfg.datapath );
+	sprintf( tmp, "%s/users.dat", cfg.datapath );
 	uf = open( tmp, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR );
-	if( uf != 0 )
-		return -1;
-	lseek( uf, sizeof( userrec_t ) * ( un - 1 ), SEEK_SET );
-	write( uf, (void *)u, sizeof( userrec_t ));
+	if( uf == -1 )
+	{
+		logger( 1, "writeuser(%i) open(3) failed: %i", un, errno );
+		bbsexit( 200 );
+	}
+
+	if( lseek( uf, sizeof( userrec_t ) * ( un - 1 ), SEEK_SET ) == -1 )
+	{
+		logger( 1, "writeuser(%i) lseek(3) failed: %i", un, errno );
+		bbsexit( 201 );
+	}
+
+	if( write( uf, (void *)u, sizeof( userrec_t )) == -1 )
+	{
+		logger( 1, "writeuser(%i) write(3) failed: %i", un, errno );
+		bbsexit( 202 );
+	}
+
+	logger( 1, "writeuser(%i) succeeded", un );
 	close( uf );
 	return 1;
 }
 
 int finduser( char *uname )
 {
-	int un = 0;
+	int un = 1, ok = 1;
 	userrec_t u;
 
-	while( loaduser( un, &u ) && !un )
+	logger( 5, "finduser(%s)", uname );
+	do
 	{
+		ok = loaduser( un, &u );
+		logger( 5, "finduser(%s) [%s]", uname, u.username );
 		if( !strcmp( uname, u.username ))
-			un = u.userid;
+		{
+			logger( 5, "finduser(%s)->[%i]", uname, u.userid );
+			return( u.userid );
+		}
+		un++;
 	}
+	while( ok );
 
-	return( un );
+	logger( 5, "finduser(%s) failed", uname );
+	return( 0 );
+}
+
+int findusernum( int un )
+{
+	userrec_t u;
+
+	if( loaduser( un, &u ) && !(u.flags && USER_DELETED ))
+	{
+		logger( 3, "findusernum(%i) = found", un );
+		return( 1 );
+	}
+	else
+	{
+		logger( 3, "findusernum(%i) = notfound", un );
+		return( 0 );
+	}
 }
 
 void experttoggle( int argc, char **argv )
@@ -78,3 +121,10 @@ void experttoggle( int argc, char **argv )
 	expert = !expert;
 }
 
+int checkpass( char *s1, char *s2 )
+{
+	if( !strcmp( s1, s2 ))
+		return( 1 );
+	else
+		return( 0 );
+}

@@ -24,7 +24,7 @@ void menu( int dl )
 	mmkey( dl, s );
 
 	if( !menucommand( s ))
-		outstr( strings[S_CMD_UNKNOWN], neutralizecolor( s ));
+		outstr( strings[S_MSG_CMD_UNKNOWN], neutralizecolor( s ));
 }
 
 /* Waits for user to make a selection from a list of hotkey choices; the default
@@ -49,7 +49,7 @@ int onekey( char *choices, char *throbsequence )
 	{
 		do
 		{
-			c = 1;
+			c = 0;
 			if( throbsequence && ansi )
 			{
 				c2 = clock();
@@ -76,7 +76,7 @@ int onekey( char *choices, char *throbsequence )
 					
 				sprintf( _choice, "%c", c );
 			}
-		} while( !strstr( choices, _choice ) && c != 13 && !_hangup );
+		} while( !strstr( choices, _choice ) && ( c && (c != 1 &&  c != 13 && !_hangup )));
 		if( c == 13 )
 			choice = choices[0];
 		else

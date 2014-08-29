@@ -50,15 +50,18 @@ int main( int argc, char **argv )
 	//clrscreen();		// Clear the screen (if we can)
 	outstr( bbs_version );	// Print the BBS version info
 	nln( 3 );		// And a few newlines...
-	outfile( "screens/logon" );	// Spit out the login screen
+	outfile( "logon" );	// Spit out the login screen
 	pausescr();		// And then ... wait!
 
-	loadmenu( 1, &lmargs );
-	// Main Loop
-	while( !_hangup && !_timeout )
+	if( login() )
 	{
-		//menu( state.menu );
-		menu( 1 );
+		loadmenu( 1, &lmargs );
+		// Main Loop
+		while( !_hangup && !_timeout )
+		{
+			//menu( state.menu );
+			menu( 1 );
+		}
 	}
 
 	bbsexit( 0 );
@@ -94,11 +97,58 @@ void logoff( int argc, char **argv )
 	pnl();
 	if( !fast )
 	{
-		outfile( "screens/logoff" );
+		outstr( strings[S_PROMPT_LOGOFF] );
+		if ( ny() != 'Y' )
+		{
+			return;
+		}
+		outfile( "logoff" );
 		pausescr();
 		pnl();
+		
 	}
 	pnl();
 	resetcolor();
 	bbsexit( 0 );
+}
+
+int login( void )
+{
+	char un[255], up[255];
+	int npcount = 0;
+	userrec_t u;
+
+	while( !checkpass( up, u.password ) && npcount < 3 )
+	{
+		npcount++;
+		outstr( strings[S_MSG_LOGIN] );
+		mpl( 20 );
+		inputwc( un, sizeof( u.username ), 20 );
+		if( !strcmp( un, "NEW" ))
+		{
+			newuser();
+			strcpy( un, thisuser.username );
+		}
+
+		if( !loaduser( finduser( un ), &u ))
+		{
+			logger( 9, "login(): Couldn't find user '%s'", un );
+		}
+
+		logger( 9, "login(%i): '%s'", u.userid, u.username );
+		outstr( strings[S_MSG_PASSWORD] );
+		mpl( 20 );
+		_echo = 0;
+		inputw( up, sizeof( u.password ), 20 );
+		_echo = 1;
+	}
+
+	if( !u.userid )
+	{
+		pnl();
+		outstrnl( strings[S_MSG_SORRY_BYE] );
+		bbsexit( 0 );
+	}
+
+	return( 1 );
 }

@@ -95,6 +95,7 @@ typedef struct menurec
 	unsigned int	flags;
 	char			throbsequence[255];	// Space-seperated sequence
 	char			prompt[255];		// Menu prompt string...
+	unsigned int	nkeys;
 	menukeyrec_t	keys[255];			// Menu keys...
 } menurec_t;
 

@@ -78,6 +78,9 @@ void plugin_add( char *cmdcode, void (*callback)( int, char** ), int flags )
 
 void plugin_del( pluginrec_t *p )
 {
+	p->prev->next = p->next;
+	p->next->prev = p->prev;
+	free( p );
 }
 
 void plugin_free( void )

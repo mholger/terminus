@@ -17,6 +17,7 @@ void	ansidemo( int argc, char **argv );
 /* bbs.c - main() */
 int		main( int argc, char **argv );
 void	bbsexit( int e );
+int	login( void );
 void	logoff( int argc, char **argv );
 
 
@@ -50,12 +51,18 @@ void	mmkey( int dl, char *cmd );
 void	loadmenu( int argc, char **argv );
 unsigned int menucommand( char *s );
 void	helpmenu( int argc, char **argv );
+int		onekey( char *choices, char *throbsequence );
 
 /* msgbase.c - Message handling functions */
 int		ismcicode( char c1, char c2, char c3 );
 char* 	mcidecode( char *s );
 
 /* newuser.c - Newuser functions */
+int	newuser( void );
+int	newpassword( char *pwd, int maxlen );
+int	checkpass( char *s1, char *s2 );
+int	okusername( char *un );
+
 
 /* plugins.c - Plugin management functions */
 int		isplugin( char *pname );
@@ -79,6 +86,8 @@ void	freering( void );
 /* user.c - User management functions */
 int		loaduser( int un, userrec_t *u );
 int		writeuser( int un, userrec_t *u );
+int		finduser( char *uname );
+int findusernum( int un );
 void		experttoggle( int argc, char **argv );
 
 /* userio.c - Functions for interacting with Users */
@@ -86,14 +95,18 @@ void		experttoggle( int argc, char **argv );
 int		outfile( char *fn );
 void	outchr( char c );
 void	outstr( char *fmt, ... );
+void	outstrnl( char *fmt, ... );
 void	out1str( char *s );
-int		onekey( char *choices, char *throbsequence );
 void	input( char *s, int maxlen );
 void	inputl( char *s, int maxlen );
 void	inputc( char *s, int maxlen );
 void	inputw( char *s, int maxlen, int window );
 void	inputwl( char *s, int maxlen, int window );
 void	inputwc( char *s, int maxlen, int window );
+void	prompt( char *pstr, char *s, int maxlen, int window );
+void	promptl( char *pstr, char *s, int maxlen, int window );
+void	promptc( char *pstr, char *s, int maxlen, int window );
+void	promptp( char *pstr, char *s, int maxlen, int window );
 void	input1( char *s, int maxlen, int mode, int window );
 void	mpl( int n );
 void	pnl( void );
@@ -101,6 +114,7 @@ void	nln( int n );
 int		get1ch( void );
 int		getkey( void );
 int		yesno( char mode );
+int		_yn();
 int		ny();
 int		ynq();
 int		nyq();
