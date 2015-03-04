@@ -32,6 +32,10 @@ int		set_blocking_mode( int fd, int mode );
 /* email.c - Internet and BBS email utility functions */
 /*	Largely built on msgbase.c */
 
+/* form.c - From display and input management */
+void	displayform( char *form );
+int		loadform( char *form );
+
 /* init.c - BBS initialization routines */
 void	configinit( void );
 void	menuinit( void );
@@ -39,6 +43,7 @@ void	cominit( void );
 void	userinit( userrec_t *u );
 void	plugininit( void );
 void	mciinit( void );
+int     initdata( void );
 
 /* logging.c - Logging-related functionality */
 int		openlog( void );

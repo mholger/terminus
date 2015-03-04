@@ -23,10 +23,12 @@ typedef struct configrec
 			textpath[100],	// Path to BBS text/ascii/ansi files
 			pluginpath[100],// Path to plugin libraries
 			logpath[100],	// Path we keep logfiles in
-			tmppath[100];	// Path to storage for temp data...
+			tmppath[100],	// Path to storage for temp data...
+			formpath[100];	// Path to form dat/ans pairs
 	unsigned int	calls,	// Total number of calls the system has received
 					flags,	// System status flags
 					nodes;	// Number of nodes available for remote logins
+    char	reserver[1024];	// For future use
 } configrec_t;
 
 /* User records */
@@ -42,7 +44,8 @@ typedef struct userrec
 			ar[27],			// Various user-level flags
 			dar[27],		// Ditto...
 			comments[81],	// User-defined comments
-			notes[81];		// Sysop-defined comments
+			notes[81],		// Sysop-defined comments
+			sshkey[2048];	// Authorized SSH public key
 	unsigned int	screenlen,	// Lines per screen...mostly for pause purposes
 					flags,		// Reserved
 					sl,			// Security level
@@ -56,6 +59,7 @@ typedef struct userrec
 					lc_yr,		// Year of last call.
 					lc_hr,		// Hour of last call
 					lc_min;		// And the minute mark.
+	char	reserved[1024];		// Reserved for future use
 } userrec_t;
 
 /* Subs - message bases in WWIV parlance */
@@ -66,6 +70,7 @@ typedef struct subrec
 // Note - ACS fields here are inconsistent with elsewhere in the code...
 			readacs[255],	// Minimum requirements to read
 			postacs[255];	// Minimum requirements to post
+	char	reserved[1024];	// Reserved for future use
 } subrec_t;
 
 /* Each menu has some number of "keys" - this is how we define which keys
@@ -78,12 +83,14 @@ typedef struct menukeyrec
 	char	key[20],		// Hotkey, or //string
 			title[50],		// Notes...
 			command[255],	// Command, space-seperated
-			menutext[80];	// Text for default system menu
+			menutext[80],	// Text for default menu, unhighlighted lightbar text
+			highlight[80];	// Highlighted text for lightbar system menu
 	int		acs;			// Minimum user ACS to access command
 	int		flags;			// Reserved
 	int		x,				// For light bars: x-coord
 			y,				// Y-coord
 			order;			// Sequence number
+	char	reserved[1024];	// Reserved for future use
 } menukeyrec_t;
 
 /* A menu is basically a collection of keys, a menu screen, and a prompt. */
@@ -97,6 +104,7 @@ typedef struct menurec
 	char			prompt[255];		// Menu prompt string...
 	unsigned int	nkeys;
 	menukeyrec_t	keys[255];			// Menu keys...
+	char	reserved[1024];	// Reserved for future use
 } menurec_t;
 
 /* Due to resource utilization, I've found it necessary to limit
@@ -117,6 +125,7 @@ struct noderec
 	int				user_id;	// Currently active user
 	unsigned char	*activity;	// What's currently happening... ptr to strings[] entry
 	unsigned int	flags;
+	char			reserved[1024];	// Reserved for future use
 	noderec_t		*next;
 	noderec_t		*prev;
 };

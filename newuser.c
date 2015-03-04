@@ -7,7 +7,7 @@
  * Functions and actions specifically related to user creation
  */
 
-// $Id$
+// $Id:$
 
 #include "vars.h"
 

@@ -15,11 +15,23 @@
 
 int main( int argc, char **argv )
 {
+    int argx;
 	char *lmargs = "MAIN";
 	/* Need getopts in here...? */
 
 	_hangup = 0;
 	_timeout = 0;
+
+	for( argx = 0; argx < argc; argx++ )
+	{
+		if( argv[argx][0] == '-' ) {
+			switch( argv[argx][1] ) {
+				case 'i':
+					initData();
+					break;
+			}
+		}
+	}
 
 	/* These need implementation...! */
 	//loadconfig( &cfg );

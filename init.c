@@ -251,3 +251,41 @@ void plugininit( void )
 	}
 }
 
+int initdata( void )
+{
+	configrec_t t;
+
+	// Read t.bbsname
+	// Read t.sysop
+	// Read t.email
+
+	// Read t.datapath
+		// Validate path
+		// Create if missing
+		// Error on Failure
+	// Read t.pluginpath
+		// Validate path
+		// Create if missing
+		// Error on Failure
+	// Read t.logpath
+		// Validate path
+		// Create if missing
+		// Error on Failure
+	// Read t.textpath
+		// Validate path
+		// Create if Missing
+		// Error on Failure
+	// Read t.tmppath
+		// Validate path
+		// Create if Missing
+		// Error on Failure
+
+	// Read t.nodes
+	// Read t.flags
+		// SYS_CLOSED
+
+	// Read t.menu
+
+	// Write Config
+	// Write SysOp User
+}
