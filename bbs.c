@@ -22,12 +22,23 @@ int main( int argc, char **argv )
 	_hangup = 0;
 	_timeout = 0;
 
+	_echo = 1;		// Enable input echoing...
+	mciok = 1;		// Turn on pipe codes
+	expert = 0;		// Default MCI support to enabled...
+	lines_listed = 0;	// For the screen-pause counter...
+	okcolor = 1;		// Color is ok until we have a reason otherwise.
+	initring( 128 );	// 128-byte ring buffer.  Waaay overkill.
+	mciinit();	// Setup MCI codes
+	cominit();		// Setup tty in unbuffered raw mode
+
 	for( argx = 0; argx < argc; argx++ )
 	{
 		if( argv[argx][0] == '-' ) {
 			switch( argv[argx][1] ) {
 				case 'i':
-					initData();
+                    ansi = 1;
+					initdata();
+                    bbsexit(0);
 					break;
 			}
 		}
@@ -37,18 +48,10 @@ int main( int argc, char **argv )
 	//loadconfig( &cfg );
 	configinit();	// Load/process system configuration.
 	openlog();
-	cominit();		// Setup tty in unbuffered raw mode
 	userinit( &thisuser );	// Initialize default user record
 	//initsub( &sub );
-	_echo = 1;		// Enable input echoing...
-	mciok = 1;		// Turn on pipe codes
-	expert = 0;		// Default MCI support to enabled...
-	lines_listed = 0;	// For the screen-pause counter...
-	okcolor = 1;		// Color is ok until we have a reason otherwise.
-	initring( 128 );	// 128-byte ring buffer.  Waaay overkill.
 
 	plugininit();	// Load plugins
-	mciinit();	// Setup MCI codes
 	menuinit();		// Load menu configurations
 
 	// Begin USER I/O!

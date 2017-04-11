@@ -92,7 +92,7 @@ void	freering( void );
 int		loaduser( int un, userrec_t *u );
 int		writeuser( int un, userrec_t *u );
 int		finduser( char *uname );
-int findusernum( int un );
+int     findusernum( int un );
 void		experttoggle( int argc, char **argv );
 
 /* userio.c - Functions for interacting with Users */
@@ -131,6 +131,7 @@ void	rawkey( int argc, char **argv );
 char**	toktok( char *s, char sep, int *cnt );
 void	paint( int pattern, char *s );
 int		exists( char *fn );
+int		direxists( char *fn );
 char*	stripcolor( char *s );
 char*	neutralizecolor( char *s );
 int		stripstrlen( char *s );

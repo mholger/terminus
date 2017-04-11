@@ -49,6 +49,16 @@ int exists( char *fn )
 		return( 0 );
 }
 
+int direxists( char *fn )
+{
+    struct stat t;
+
+    if( stat( fn, &t ) != -1 && S_ISDIR( t.st_mode ))
+        return( 1 );
+    else
+        return( 0 );
+}
+
 char *stripcolor( char *s )
 {
 	int len = 0, x = 0;

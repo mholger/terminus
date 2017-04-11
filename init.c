@@ -254,38 +254,66 @@ void plugininit( void )
 int initdata( void )
 {
 	configrec_t t;
+    int uf;
+    char tmp[81];
 
-	// Read t.bbsname
-	// Read t.sysop
-	// Read t.email
+    promptl("BBS Name: ", t.bbsname, sizeof(t.bbsname), 30);
+    promptl("Sysop Name: ", t.sysop, sizeof(t.sysop), 30);
+    promptl("Sysop Email: ", t.email, sizeof(t.email), 30);
 
-	// Read t.datapath
-		// Validate path
-		// Create if missing
-		// Error on Failure
-	// Read t.pluginpath
-		// Validate path
-		// Create if missing
-		// Error on Failure
-	// Read t.logpath
-		// Validate path
-		// Create if missing
-		// Error on Failure
-	// Read t.textpath
-		// Validate path
-		// Create if Missing
-		// Error on Failure
-	// Read t.tmppath
-		// Validate path
-		// Create if Missing
-		// Error on Failure
+	promptl("Data Path: ", t.datapath, sizeof(t.datapath), 30);
+    if( !direxists( t.datapath )) {
+        if( mkdir( t.datapath, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH ) != 0 ) {
+            return( -1 );
+        }
+    }
+
+	promptl("Plugin Path: ", t.pluginpath, sizeof(t.pluginpath), 30);
+    if( !direxists( t.pluginpath )) {
+        if( mkdir( t.pluginpath, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH ) != 0 ) {
+            return( -1 );
+        }
+    }
+
+	promptl("Log Path: ", t.logpath, sizeof(t.logpath), 30);
+    if( !direxists( t.logpath ) != 0 ) {
+        if( mkdir( t.logpath, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH ) != 0 ) {
+            return( -1 );
+        }
+    }
+
+	promptl("Textfile Path: ", t.textpath, sizeof(t.textpath), 30);
+    if( !direxists( t.textpath ) != 0 ) {
+        if( mkdir( t.textpath, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH ) != 0 ) {
+            return( -1 );
+        }
+    }
+
+	promptl("Temp file Path: ", t.tmppath, sizeof(t.tmppath), 30);
+    if( !direxists( t.tmppath )) {
+        if( mkdir( t.tmppath, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH ) != 0 ) {
+            return( -1 );
+        }
+    }
 
 	// Read t.nodes
 	// Read t.flags
 		// SYS_CLOSED
 
 	// Read t.menu
+    promptl("Main Menu: ", t.menu, sizeof(t.menu), 30);
 
 	// Write Config
+	sprintf(tmp, "%s/config.dat", t.datapath);
+    uf = open(tmp, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
+    if (uf == -1) {
+        printf("initdata() open(3) failed: %i\n", errno);
+        bbsexit(201);
+    }
+    if (write(uf, &t, sizeof(configrec_t)) == -1) {
+        printf("initdata() write(3) failed: %i\n", errno);
+        bbsexit(202);
+    }
 	// Write SysOp User
+    return(0);
 }
