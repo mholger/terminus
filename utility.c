@@ -123,3 +123,8 @@ char upcase( char c )
 
 	return( c );
 }
+
+void clean( char *s )
+{
+    bzero(s, strlen(s));
+}

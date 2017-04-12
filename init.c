@@ -18,7 +18,7 @@ void configinit( void )
 	
 	strcpy( t.bbsname, "Terminus" );
 	strcpy( t.sysop, "Radix" );
-	strcpy( t.email, "radix@terminusbbs.com" );
+	strcpy( t.email, "" );
 	strcpy( t.datapath, "./data" );
 	strcpy( t.pluginpath, "./plugins" );
 	strcpy( t.logpath, "./logs" );
@@ -253,66 +253,65 @@ void plugininit( void )
 
 int initdata( void )
 {
-	configrec_t t;
     int uf;
     char tmp[81];
 
-    promptl("BBS Name: ", t.bbsname, sizeof(t.bbsname), 30);
-    promptl("Sysop Name: ", t.sysop, sizeof(t.sysop), 30);
-    promptl("Sysop Email: ", t.email, sizeof(t.email), 30);
+    promptl("BBS Name:       ", cfg.bbsname, sizeof(cfg.bbsname), 30);
+    promptl("Sysop Name:     ", cfg.sysop, sizeof(cfg.sysop), 30);
+    promptl("Sysop Email:    ", cfg.email, sizeof(cfg.email), 30);
 
-	promptl("Data Path: ", t.datapath, sizeof(t.datapath), 30);
-    if( !direxists( t.datapath )) {
-        if( mkdir( t.datapath, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH ) != 0 ) {
+	promptl("Data Path:      ", cfg.datapath, sizeof(cfg.datapath), 30);
+    if( !direxists( cfg.datapath )) {
+        if( mkdir( cfg.datapath, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH ) != 0 ) {
             return( -1 );
         }
     }
 
-	promptl("Plugin Path: ", t.pluginpath, sizeof(t.pluginpath), 30);
-    if( !direxists( t.pluginpath )) {
-        if( mkdir( t.pluginpath, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH ) != 0 ) {
+	promptl("Plugin Path:    ", cfg.pluginpath, sizeof(cfg.pluginpath), 30);
+    if( !direxists( cfg.pluginpath )) {
+        if( mkdir( cfg.pluginpath, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH ) != 0 ) {
             return( -1 );
         }
     }
 
-	promptl("Log Path: ", t.logpath, sizeof(t.logpath), 30);
-    if( !direxists( t.logpath ) != 0 ) {
-        if( mkdir( t.logpath, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH ) != 0 ) {
+	promptl("Log Path:       ", cfg.logpath, sizeof(cfg.logpath), 30);
+    if( !direxists( cfg.logpath ) != 0 ) {
+        if( mkdir( cfg.logpath, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH ) != 0 ) {
             return( -1 );
         }
     }
 
-	promptl("Textfile Path: ", t.textpath, sizeof(t.textpath), 30);
-    if( !direxists( t.textpath ) != 0 ) {
-        if( mkdir( t.textpath, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH ) != 0 ) {
+	promptl("Textfile Path:  ", cfg.textpath, sizeof(cfg.textpath), 30);
+    if( !direxists( cfg.textpath ) != 0 ) {
+        if( mkdir( cfg.textpath, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH ) != 0 ) {
             return( -1 );
         }
     }
 
-	promptl("Temp file Path: ", t.tmppath, sizeof(t.tmppath), 30);
-    if( !direxists( t.tmppath )) {
-        if( mkdir( t.tmppath, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH ) != 0 ) {
+	promptl("Temp file Path: ", cfg.tmppath, sizeof(cfg.tmppath), 30);
+    if( !direxists( cfg.tmppath )) {
+        if( mkdir( cfg.tmppath, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH ) != 0 ) {
             return( -1 );
         }
     }
 
-	// Read t.nodes
-	// Read t.flags
+	// Read cfg.nodes
+	// Read cfg.flags
 		// SYS_CLOSED
 
-	// Read t.menu
-    promptl("Main Menu: ", t.menu, sizeof(t.menu), 30);
+	// Read cfg.menu
+    promptl("Main Menu:      ", cfg.menu, sizeof(cfg.menu), 30);
 
 	// Write Config
-	sprintf(tmp, "%s/config.dat", t.datapath);
+	sprintf(tmp, "%s/config.dat", cfg.datapath);
     uf = open(tmp, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
     if (uf == -1) {
         printf("initdata() open(3) failed: %i\n", errno);
-        bbsexit(201);
+        bbsexit(100);
     }
-    if (write(uf, &t, sizeof(configrec_t)) == -1) {
+    if (write(uf, &cfg, sizeof(configrec_t)) == -1) {
         printf("initdata() write(3) failed: %i\n", errno);
-        bbsexit(202);
+        bbsexit(101);
     }
 	// Write SysOp User
     return(0);

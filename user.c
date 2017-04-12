@@ -37,11 +37,15 @@ int loaduser( int un, userrec_t *u )
 			memcpy( u, tu, sizeof( userrec_t ));
 		}
 		else
+            close( uf );
+            free( tu );
 			return -1;
 	}
 	else	// Bad User!
 	{
 		logger( 4, "loaduser(%i) - bad user", un );
+        close( uf );
+        free( tu );
 		return -1;
 	}
 
@@ -61,7 +65,7 @@ int writeuser( int un, userrec_t *u )
 	if( uf == -1 )
 	{
 		logger( 1, "writeuser(%i) open(3) failed: %i", un, errno );
-		bbsexit( 200 );
+		bbsexit( 203 );
 	}
 
 	if( lseek( uf, sizeof( userrec_t ) * ( un - 1 ), SEEK_SET ) == -1 )
@@ -89,8 +93,9 @@ int finduser( char *uname )
 	logger( 5, "finduser(%s)", uname );
 	do
 	{
+        logger( 6, "finduser(%s) Loading #%i...", uname, un );
 		ok = loaduser( un, &u );
-		logger( 5, "finduser(%s) [%s]", uname, u.username );
+		logger( 6, "finduser(%s) Loaded [%s]", uname, u.username );
 		if( !strcmp( uname, u.username ))
 		{
 			logger( 5, "finduser(%s)->[%i]", uname, u.userid );
@@ -98,7 +103,7 @@ int finduser( char *uname )
 		}
 		un++;
 	}
-	while( ok );
+	while( ok >= 0 );
 
 	logger( 5, "finduser(%s) failed", uname );
 	return( 0 );
@@ -108,7 +113,7 @@ int findusernum( int un )
 {
 	userrec_t u;
 
-	if( loaduser( un, &u ) && !(u.flags && USER_DELETED ))
+	if( loaduser( un, &u ) >= 0 && !(u.flags && USER_DELETED ))
 	{
 		logger( 3, "findusernum(%i) = found", un );
 		return( 1 );

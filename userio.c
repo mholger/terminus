@@ -286,13 +286,18 @@ void input1( char *s, int maxlen, int mode, int window ) /* userio.c */
 {
 	int x = 0, cursor = 0, cx, boxx = 0, boxy;
 	int c;
+    char tmp[maxlen+1];
 
 	/* Window is for input areas that accept more text than they can show;
 	 * ie: input area is 20 characters wide, but input text can be 80 -
 	 * maxlen = 80; window = 20.
 	 */
 
-	bzero( s, maxlen );
+    strcpy( tmp, s );
+    clean(s);
+    strcpy( s, tmp );
+    outstr(s);
+    x = strlen(s);
 
 	if( !window )
 		window = maxlen;

@@ -136,6 +136,7 @@ char*	stripcolor( char *s );
 char*	neutralizecolor( char *s );
 int		stripstrlen( char *s );
 char	upcase( char c );
+void    clean( char *s );
 
 /* version.c - Version data */
 void	vers( int argc, char **argv );

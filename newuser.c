@@ -19,6 +19,7 @@ int newuser( void )
 
 	while( !ok )
 	{
+        clean(s);
 		promptc( strings[S_PROMPT_NEWUSER_USERNAME], s, sizeof( u.username ), 20 );
 		logger( 4, "newuser(): un: %s", s );
 		if( okusername( s ))
@@ -42,6 +43,7 @@ int newuser( void )
 	memset( s, '\0', sizeof( s ));
 	while( !ok && npcount < 3 )
 	{
+        clean(s);
 		if( newpassword( s, sizeof( u.password )))
 			ok = 1;
 		else
@@ -77,6 +79,9 @@ int newuser( void )
 int newpassword( char *pwd, int maxlen )
 {
 	char s[255], s2[255];
+
+    clean(s);
+    clean(s2);
 
 	promptp( strings[S_PROMPT_NEWUSER_PASSWORD], s, maxlen, 20 );
 	promptp( strings[S_PROMPT_NEWUSER_PASSVERIFY], s2, maxlen, 20 );

@@ -28,6 +28,7 @@ int main( int argc, char **argv )
 	lines_listed = 0;	// For the screen-pause counter...
 	okcolor = 1;		// Color is ok until we have a reason otherwise.
 	initring( 128 );	// 128-byte ring buffer.  Waaay overkill.
+	configinit();	// Load/process system configuration.
 	mciinit();	// Setup MCI codes
 	cominit();		// Setup tty in unbuffered raw mode
 
@@ -46,7 +47,6 @@ int main( int argc, char **argv )
 
 	/* These need implementation...! */
 	//loadconfig( &cfg );
-	configinit();	// Load/process system configuration.
 	openlog();
 	userinit( &thisuser );	// Initialize default user record
 	//initsub( &sub );
@@ -133,8 +133,10 @@ int login( void )
 	int npcount = 0;
 	userrec_t u;
 
-	while( !strcmp( "", un ) && !checkpass( up, u.password ) && npcount < 3 )
-	{
+
+	do {
+        clean(un);
+        clean(up);
 		npcount++;
 		outstr( strings[S_MSG_LOGIN] );
 		mpl( 20 );
@@ -157,7 +159,8 @@ int login( void )
 		_echo = 0;
 		inputw( up, sizeof( u.password ), 20 );
 		_echo = 1;
-	}
+        logger( 9, "login(): '%s' '%s'", un, up );
+	} while( !checkpass( up, u.password ) && npcount < 3 );
 
 	if( !u.userid )
 	{
