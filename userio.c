@@ -296,11 +296,23 @@ void input1( char *s, int maxlen, int mode, int window ) /* userio.c */
     strcpy( tmp, s );
     clean(s);
     strcpy( s, tmp );
-    outstr(s);
+    clean(tmp);
     x = strlen(s);
 
 	if( !window )
 		window = maxlen;
+    else {
+        if( x > window ) {
+            cx = x - window;
+            boxx = cx;
+        }
+        else {
+            cx = 0;
+        }
+        while( cx < x ) {
+            outchr(s[cx++]);
+        }
+    }
 
 	boxy = boxx + window;
 
