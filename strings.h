@@ -5,8 +5,8 @@
 
 char strings[MAXSTRINGS][512] = {
 	"XX\0",									// S_HIDDEN_FILL
-	//" ±\0",									// S_MPL_FILL
-	" .\0",									// S_MPL_FILL
+	" ±\0",									// S_MPL_FILL
+	//" .\0",									// S_MPL_FILL
 	"|08[|20|12\0",							// S_MPL_PREFIX
 	"|16|08]|20|15\0",						// S_MPL_SUFFIX
 	//"|08[|15\0",							// S_MPL_PREFIX

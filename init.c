@@ -148,6 +148,8 @@ void menuinit( void )
 
 void userinit( userrec_t *u )
 {
+    memset(u->username, '\0', 27);
+    memset(u->password, '\0', 27);
 	u->sl = 0;
 	u->dsl = 0;
 	memset( u->ar, '\0', 27 );

@@ -70,6 +70,8 @@ int newuser( void )
 		u.flags |= USER_SYSOP;
 	}
 
+    u.flags ^= USER_DELETED;
+
 	thisuser = u;
 
 	writeuser( thisuser.userid, &thisuser );

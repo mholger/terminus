@@ -36,10 +36,11 @@ int loaduser( int un, userrec_t *u )
 			logger( 4, "loaduser(%i) - found user", un );
 			memcpy( u, tu, sizeof( userrec_t ));
 		}
-		else
+		else {
             close( uf );
             free( tu );
 			return -1;
+        }
 	}
 	else	// Bad User!
 	{
@@ -111,9 +112,9 @@ int finduser( char *uname )
 
 int findusernum( int un )
 {
-	userrec_t u;
+	userrec_t lu;
 
-	if( loaduser( un, &u ) >= 0 && !(u.flags && USER_DELETED ))
+	if( loaduser( un, &lu ) >= 0 && !(lu.flags & USER_DELETED ))
 	{
 		logger( 3, "findusernum(%i) = found", un );
 		return( 1 );
