@@ -130,7 +130,7 @@ void logoff( int argc, char **argv )
 int login( void )
 {
 	char un[255], up[255];
-	int npcount = 0, authenticated = 0;
+	int npcount = 0, authenticated = 0, usernum = 0;
 	userrec_t u;
 
 
@@ -148,7 +148,8 @@ int login( void )
 			strcpy( un, thisuser.username );
 		}
 
-		if( !strcmp( "", un ) || (atoi(un)?!loaduser(atoi(un), &u):loaduser( finduser( un ), &u )))
+		usernum = findusernum(atoi(un));
+		if( !strcmp( "", un ) || !(usernum?loaduser(usernum, &u):loaduser( finduser( un ), &u )))
 		{
 			logger( 9, "login(): Couldn't find user '%s'", un );
 		}
