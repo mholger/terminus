@@ -130,7 +130,7 @@ void logoff( int argc, char **argv )
 int login( void )
 {
 	char un[255], up[255];
-	int npcount = 0;
+	int npcount = 0, authenticated = 0;
 	userrec_t u;
 
 
@@ -160,9 +160,9 @@ int login( void )
 		inputw( up, sizeof( u.password ), 20 );
 		_echo = 1;
         logger( 9, "login(): '%s' '%s'", un, up );
-	} while( !checkpass( up, u.password ) && npcount < 3 );
+	} while( !(authenticated = checkpass( up, u.password )) && npcount < 3 );
 
-	if( !u.userid )
+	if( !authenticated )
 	{
 		pnl();
 		outstrnl( strings[S_MSG_SORRY_BYE] );
