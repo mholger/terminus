@@ -2,5 +2,6 @@
 *.o
 *.so
 bbs
+config.dat
 logs/*
 data/*

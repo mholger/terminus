@@ -20,7 +20,6 @@ void	bbsexit( int e );
 int	login( void );
 void	logoff( int argc, char **argv );
 
-
 /* com.c - Comms-related routines */
 void	out1ch( char c );
 void	comreset( void );
@@ -28,6 +27,9 @@ int		_kbhit( void );
 int		set_blocking_mode( int fd, int mode );
 
 /* config.c - Configuration handler */
+void    saveconfig(void);
+void    loadconfig(void);
+void    configdump( int argc, char **argv );
 
 /* email.c - Internet and BBS email utility functions */
 /*	Largely built on msgbase.c */

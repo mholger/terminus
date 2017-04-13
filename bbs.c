@@ -140,7 +140,7 @@ int login( void )
 		npcount++;
 		outstr( strings[S_MSG_LOGIN] );
 		mpl( 20 );
-		inputwc( un, sizeof( u.username ), 20 );
+		inputw( un, sizeof( u.username ), 20 );
 
 		if( !strcmp( un, "NEW" ))
 		{
@@ -148,7 +148,7 @@ int login( void )
 			strcpy( un, thisuser.username );
 		}
 
-		if( !strcmp( "", un ) || !loaduser( finduser( un ), &u ))
+		if( !strcmp( "", un ) || (atoi(un)?!loaduser(atoi(un), &u):loaduser( finduser( un ), &u )))
 		{
 			logger( 9, "login(): Couldn't find user '%s'", un );
 		}

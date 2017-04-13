@@ -30,6 +30,10 @@ void configinit( void )
 	t.nodes = 8;
 	
 	cfg = t;
+
+	if(exists("config.dat")) {
+		loadconfig();
+	}
 }
 
 void menuinit( void )
@@ -84,6 +88,13 @@ void menuinit( void )
 	strcpy( mk.command, "SV" );
 	strcpy( mk.menutext, "|12[|14VERSION|12] |15V|14e|06rsion |15I|14n|06fo" );
 	mk.order = 6;
+	m.keys[mk.order] = mk;
+
+	strcpy( mk.key, "CONFIG" );
+	strcpy( mk.title, "Config Dump" );
+	strcpy( mk.command, "SC" );
+	strcpy( mk.menutext, "|12[|14CONFIG|12] |15C|14o|06nfig |15D|14u|06mp" );
+	mk.order = 13;
 	m.keys[mk.order] = mk;
 
 	sprintf( mk.key, "G" );
@@ -210,6 +221,7 @@ void plugininit( void )
 
 	/* Once the first record exists, we can just plugin_add() 'til done! */
 	/* Add intneral functions first; we provide just a handful, but they're key */
+	plugin_add( "SC", &configdump, 0 );
 	plugin_add( "SO", &logoff, 0 );
 	plugin_add( "LM", &loadmenu, 0 );
 	plugin_add( "LP", &plugin_load_menu, 0 );
@@ -253,42 +265,39 @@ void plugininit( void )
 
 int initdata( void )
 {
-    int uf;
-    char tmp[81];
+    prompt("BBS Name:       ", cfg.bbsname, sizeof(cfg.bbsname), 30);
+    prompt("Sysop Name:     ", cfg.sysop, sizeof(cfg.sysop), 30);
+    prompt("Sysop Email:    ", cfg.email, sizeof(cfg.email), 30);
 
-    promptl("BBS Name:       ", cfg.bbsname, sizeof(cfg.bbsname), 30);
-    promptl("Sysop Name:     ", cfg.sysop, sizeof(cfg.sysop), 30);
-    promptl("Sysop Email:    ", cfg.email, sizeof(cfg.email), 30);
-
-	promptl("Data Path:      ", cfg.datapath, sizeof(cfg.datapath), 30);
+	prompt("Data Path:      ", cfg.datapath, sizeof(cfg.datapath), 30);
     if( !direxists( cfg.datapath )) {
         if( mkdir( cfg.datapath, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH ) != 0 ) {
             return( -1 );
         }
     }
 
-	promptl("Plugin Path:    ", cfg.pluginpath, sizeof(cfg.pluginpath), 30);
+	prompt("Plugin Path:    ", cfg.pluginpath, sizeof(cfg.pluginpath), 30);
     if( !direxists( cfg.pluginpath )) {
         if( mkdir( cfg.pluginpath, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH ) != 0 ) {
             return( -1 );
         }
     }
 
-	promptl("Log Path:       ", cfg.logpath, sizeof(cfg.logpath), 30);
+	prompt("Log Path:       ", cfg.logpath, sizeof(cfg.logpath), 30);
     if( !direxists( cfg.logpath ) != 0 ) {
         if( mkdir( cfg.logpath, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH ) != 0 ) {
             return( -1 );
         }
     }
 
-	promptl("Textfile Path:  ", cfg.textpath, sizeof(cfg.textpath), 30);
+	prompt("Textfile Path:  ", cfg.textpath, sizeof(cfg.textpath), 30);
     if( !direxists( cfg.textpath ) != 0 ) {
         if( mkdir( cfg.textpath, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH ) != 0 ) {
             return( -1 );
         }
     }
 
-	promptl("Temp file Path: ", cfg.tmppath, sizeof(cfg.tmppath), 30);
+	prompt("Tempfile Path:  ", cfg.tmppath, sizeof(cfg.tmppath), 30);
     if( !direxists( cfg.tmppath )) {
         if( mkdir( cfg.tmppath, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH ) != 0 ) {
             return( -1 );
@@ -300,19 +309,8 @@ int initdata( void )
 		// SYS_CLOSED
 
 	// Read cfg.menu
-    promptl("Main Menu:      ", cfg.menu, sizeof(cfg.menu), 30);
+    prompt("Initial Menu:   ", cfg.menu, sizeof(cfg.menu), 30);
 
-	// Write Config
-	sprintf(tmp, "%s/config.dat", cfg.datapath);
-    uf = open(tmp, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
-    if (uf == -1) {
-        printf("initdata() open(3) failed: %i\n", errno);
-        bbsexit(100);
-    }
-    if (write(uf, &cfg, sizeof(configrec_t)) == -1) {
-        printf("initdata() write(3) failed: %i\n", errno);
-        bbsexit(101);
-    }
-	// Write SysOp User
+    saveconfig();
     return(0);
 }
