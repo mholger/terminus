@@ -67,7 +67,6 @@ char* 	mcidecode( char *s );
 /* newuser.c - Newuser functions */
 int	newuser( void );
 int	newpassword( char *pwd, int maxlen );
-int	checkpass( char *s1, char *s2 );
 int	okusername( char *un );
 
 
@@ -96,6 +95,7 @@ int		writeuser( int un, userrec_t *u );
 int		finduser( char *uname );
 int     findusernum( int un );
 void		experttoggle( int argc, char **argv );
+int checkpass( int userid, char *s1 );
 
 /* userio.c - Functions for interacting with Users */
 /*	Higher-level functions built on com.c */

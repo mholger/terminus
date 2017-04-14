@@ -131,10 +131,17 @@ void experttoggle( int argc, char **argv )
 	expert = !expert;
 }
 
-int checkpass( char *s1, char *s2 )
+int checkpass( int userid, char *s1 )
 {
-	if( !strcmp( s1, s2 ))
-		return( 1 );
-	else
+	int usernum = -1;
+	userrec_t u;
+
+	usernum = loaduser(userid, &u);
+	logger(5, "checkpass(): userid=%i, u.userid=%i, s1=%s, u.password=%s", userid, u.userid, s1, u.password);
+	if(usernum <= 0 || strcmp(s1, u.password)) {
 		return( 0 );
+	}
+	else {
+		return( 1 );
+	}
 }

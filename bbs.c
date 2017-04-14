@@ -158,9 +158,18 @@ int login( void )
 		}
 
 		usernum = findusernum(atoi(un));
-		if( !strcmp( "", un ) || !(usernum?loaduser(usernum, &u):loaduser( finduser( un ), &u )))
+		if(usernum > 0) {
+			usernum = loaduser(usernum, &u);
+		}
+		else {
+			usernum = loaduser(finduser(un), &u);
+		}
+		logger(9, "login(): findusernum(atoi(%i))=%i", atoi(un), usernum);
+		if( !strcmp( "", un ) || !usernum)
 		{
 			logger( 9, "login(): Couldn't find user '%s'", un );
+			usernum = -1;
+			userinit(&u);
 		}
 
 		logger( 9, "login(%i): '%s'", u.userid, u.username );
@@ -170,17 +179,20 @@ int login( void )
 		inputw( up, sizeof( u.password ), 20 );
 		_echo = 1;
         logger( 9, "login(): '%s' '%s'", un, up );
-	} while( !(authenticated = checkpass( up, u.password )) && npcount < 3 );
+        authenticated = checkpass( u.userid, up );
+	} while( !authenticated && npcount < 3 );
 
-	if( usernum <= 0 && !authenticated )
+	if( usernum > 0 && authenticated )
 	{
-		pnl();
-		outstrnl( strings[S_MSG_SORRY_BYE] );
-		bbsexit( 0 );
+		if( u.flags & USER_SYSOP ) {
+			logger( 1, "login(): SYSOP ON DECK" );
+		}
+		return( 1 );
 	}
 
-	if( u.flags && USER_SYSOP )
-		logger( 1, "login(): SYSOP ON DECK" );
-
-	return( 1 );
+	logger(5, "login(): usernum=%i, authenticated=%i, u.userid=%i", usernum, authenticated, u.userid);
+	pnl();
+	outstrnl( strings[S_MSG_SORRY_BYE] );
+	bbsexit( 0 );
+	return( 0 );
 }
