@@ -45,20 +45,31 @@ int _kbhit(void)
 	fd_set read_fd;
 	static clock_t cld = 0;
 	clock_t cnow;
+	static int tlast;
+	int tnow;
+	struct timeval tv_now;
 	long tsleep;
 
-	if( !cld )
+	if( !cld ) {
 		cld = clock();
+		gettimeofday(&tv_now, NULL);
+		tlast = tv_now.tv_sec;
+	}
 
 	cnow = clock();
+	gettimeofday(&tv_now, NULL);
+	tnow = tv_now.tv_sec;
+
+	if((tnow - tlast) > cfg.timeout) {
+		timeout();
+	}
+
 	tsleep = ( kdelay - ( cnow - cld ));
-	if( tsleep < 0 )
-	tsleep = 0;
+	if( tsleep < 0 )	// This should never happen ...
+		tsleep = 0;
 
 	if( tsleep )
 		usleep( tsleep );
-
-	cld = cnow;
 
 	/* Do not wait at all, not even a microsecond */
 	tv.tv_sec=0;
@@ -82,9 +93,12 @@ int _kbhit(void)
 	/*  read_fd now holds a bit map of files that are
 	 * readable. We test the entry for the standard
 	 * input (file 0). */
-	if(FD_ISSET(0,&read_fd))
+	if(FD_ISSET(0,&read_fd)) {
 		/* Character pending on stdin */
+		cld = cnow;
+		tlast = tnow;
 		return 1;
+	}
 
 	/* no characters were pending */
 	return 0;

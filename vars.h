@@ -27,6 +27,8 @@
 
 #include <arpa/telnet.h>
 
+#include <sys/time.h>
+
 extern char *bbs_version;
 extern char *bbs_long_name;
 extern unsigned int bbs_build_num;

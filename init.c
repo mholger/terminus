@@ -28,6 +28,7 @@ void configinit( char *cf )
 	
 	t.flags &= (SYS_CLOSED);
 	t.nodes = 8;
+	t.timeout = 30;
 	
 	cfg = t;
 
@@ -267,6 +268,10 @@ void plugininit( void )
 
 int initdata(char *cf)
 {
+	char timeout[21];
+
+	clean(timeout);
+	
     prompt("BBS Name:       ", cfg.bbsname, sizeof(cfg.bbsname), 30);
     prompt("Sysop Name:     ", cfg.sysop, sizeof(cfg.sysop), 30);
     prompt("Sysop Email:    ", cfg.email, sizeof(cfg.email), 30);
@@ -312,6 +317,9 @@ int initdata(char *cf)
 
 	// Read cfg.menu
     prompt("Initial Menu:   ", cfg.menu, sizeof(cfg.menu), 30);
+
+    prompt("Timeout:        ", timeout, sizeof(int), 30);
+    cfg.timeout = atoi(timeout);
 
     saveconfig(cf);
     return(0);

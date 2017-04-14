@@ -75,13 +75,15 @@ int peek1ch( void )
 char kbhit( void )
 {
 	int tsleep;
-	clock_t c1 = 0, c2;
+	clock_t c1 = 0;
+	clock_t c2;
 
 	if( !c1 )
 		c1 = c2 = clock();
 
-	while( _kbhit() )
+	while( _kbhit() ) {
 		stash( getchar() );
+	}
 
 	tsleep = kdelay - ( c2 - c1 );
 	if( tsleep < 0 )

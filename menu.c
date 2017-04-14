@@ -13,11 +13,10 @@
 
 void menu( int dl )
 {
-	char s[81];
+	char s[81], *tmp = "SYS";
 
 	memset( s, '\0', sizeof( s ));
-	if( !expert )
-		helpmenu( 0, NULL );
+	helpmenu( 1, &tmp );
 
 	outstr( thismenu.prompt );
 
@@ -290,19 +289,34 @@ void menu_add_command( char *menu, char *cmd, menukeyrec_t *mk )
 void helpmenu( int argc, char **argv )
 {
 	int k = 0;
+	int x = 0;
+	int showmenu = 0;
 
+	if( argc > 0 ) {
+		for (x = 0; x < argc; x++) {
+			if(!strcmp(argv[x], "SYS") && !expert) {
+				showmenu = 1;
+			}
+		}
+	}
+	else if(expert) {
+		showmenu = 1;
+	}
 	// If there exists an exact match to the menu's fn - use it. Period.
 	// Else, if an ANSI variation exists, and the users has ANSI support
 	// enabled, we use that one.  Last (custom) resort - ASCII.
 	// If none of the above succeeds, use the built-in menu strings...
-	if( !outfile( thismenu.fn ))
-		while( thismenu.keys[k].key[0] )
-		{
-			if( strcmp( thismenu.keys[k].key, "**" ) && thismenu.keys[k].key[0] != '\\' )
+	if(showmenu) {
+		if( !outfile( thismenu.fn )) {
+			while( thismenu.keys[k].key[0] )
 			{
-				outstr( thismenu.keys[k].menutext );
-				outstr( "|NL" );
+				if( strcmp( thismenu.keys[k].key, "**" ) && thismenu.keys[k].key[0] != '\\' )
+				{
+					outstr( thismenu.keys[k].menutext );
+					outstr( "|NL" );
+				}
+				k++;
 			}
-			k++;
 		}
+	}
 }

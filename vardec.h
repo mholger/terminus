@@ -27,8 +27,9 @@ typedef struct configrec
 			formpath[100];	// Path to form dat/ans pairs
 	unsigned int	calls,	// Total number of calls the system has received
 					flags,	// System status flags
-					nodes;	// Number of nodes available for remote logins
-    char	reserver[1024];	// For future use
+					nodes,	// Number of nodes available for remote logins
+					timeout;// Idle seconds before disconnect
+    char	reserved[1024];	// For future use
 } configrec_t;
 
 /* User records */

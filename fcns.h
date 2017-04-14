@@ -127,6 +127,7 @@ int		ynq();
 int		nyq();
 void	pausescr( void );
 void	rawkey( int argc, char **argv );
+void    timeout(void);
 
 /* utility.c - Utility functions */
 /*	Stand-alone utility type functions */
