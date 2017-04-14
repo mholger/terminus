@@ -50,14 +50,12 @@ int main( int argc, char **argv )
 	mciinit();	// Setup MCI codes
 	cominit();		// Setup tty in unbuffered raw mode
 
-	/* These need implementation...! */
 	if( runmode == 1 ) {
         ansi = 1;
 		initdata(cfgfile);
         bbsexit(0);
     }
 
-	//loadconfig( &cfg );
 	openlog();
 	userinit( &thisuser );	// Initialize default user record
 	//initsub( &sub );

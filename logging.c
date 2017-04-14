@@ -42,7 +42,7 @@ void logger( int lv, char *str, ... )
 	char buf[4096], buf2[4096], buf3[27];
 	time_t tm;
 
-	if( lv <= debuglevel )
+	if( lv <= debuglevel && logfile )
 	{
 		time( &tm );
 
