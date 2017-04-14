@@ -75,7 +75,7 @@ int newuser( void )
 	thisuser = u;
 
 	writeuser( thisuser.userid, &thisuser );
-	return( 1 );
+	return(thisuser.userid);
 }
 
 int newpassword( char *pwd, int maxlen )

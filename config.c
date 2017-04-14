@@ -9,13 +9,13 @@
  * Functions supporting configuration loading/modifying/saving...
  */
 
-void saveconfig(void)
+void saveconfig(char *cf)
 {
     int uf;
     char tmp[81];
 
     // Write Config
-    sprintf(tmp, "config.dat");
+    sprintf(tmp, "%s", cf);
     uf = open(tmp, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
     if (uf == -1) {
         printf("saveconfig() open(3) failed: %i\n", errno);
@@ -27,12 +27,12 @@ void saveconfig(void)
     }
 }
 
-void loadconfig(void)
+void loadconfig(char *cf)
 {
     int uf;
     char tmp[81];
 
-    sprintf(tmp, "config.dat");
+    sprintf(tmp, "%s", cf);
     uf = open(tmp, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
     if (uf == -1) {
         printf("loadconfig() open(3) failed: %i\n", errno);

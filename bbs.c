@@ -15,9 +15,27 @@
 
 int main( int argc, char **argv )
 {
-    int argx;
+    int argx = 0, runmode = 0;
 	char *lmargs = "MAIN";
+	char cfgfile[255];
 	/* Need getopts in here...? */
+
+	sprintf(cfgfile, "config.dat");
+
+	for( argx = 0; argx < argc; argx++ )
+	{
+		if( argv[argx][0] == '-' ) {
+			switch( argv[argx][1] ) {
+				case 'i':
+					runmode = 1;
+					break;
+				case 'c':
+					argx++;
+					strcpy( cfgfile, argv[argx] );
+					break;
+			}
+		}
+	}
 
 	_hangup = 0;
 	_timeout = 0;
@@ -28,24 +46,17 @@ int main( int argc, char **argv )
 	lines_listed = 0;	// For the screen-pause counter...
 	okcolor = 1;		// Color is ok until we have a reason otherwise.
 	initring( 128 );	// 128-byte ring buffer.  Waaay overkill.
-	configinit();	// Load/process system configuration.
+	configinit(cfgfile);	// Load/process system configuration.
 	mciinit();	// Setup MCI codes
 	cominit();		// Setup tty in unbuffered raw mode
 
-	for( argx = 0; argx < argc; argx++ )
-	{
-		if( argv[argx][0] == '-' ) {
-			switch( argv[argx][1] ) {
-				case 'i':
-                    ansi = 1;
-					initdata();
-                    bbsexit(0);
-					break;
-			}
-		}
-	}
-
 	/* These need implementation...! */
+	if( runmode == 1 ) {
+        ansi = 1;
+		initdata(cfgfile);
+        bbsexit(0);
+    }
+
 	//loadconfig( &cfg );
 	openlog();
 	userinit( &thisuser );	// Initialize default user record

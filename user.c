@@ -117,7 +117,7 @@ int findusernum( int un )
 	if( loaduser( un, &lu ) >= 0 && !(lu.flags & USER_DELETED ))
 	{
 		logger( 3, "findusernum(%i) = found", un );
-		return( 1 );
+		return( lu.userid );
 	}
 	else
 	{

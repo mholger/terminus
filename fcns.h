@@ -27,8 +27,8 @@ int		_kbhit( void );
 int		set_blocking_mode( int fd, int mode );
 
 /* config.c - Configuration handler */
-void    saveconfig(void);
-void    loadconfig(void);
+void    saveconfig(char *cf);
+void    loadconfig(char *cf);
 void    configdump( int argc, char **argv );
 
 /* email.c - Internet and BBS email utility functions */
@@ -39,13 +39,13 @@ void	displayform( char *form );
 int		loadform( char *form );
 
 /* init.c - BBS initialization routines */
-void	configinit( void );
+void	configinit( char *cf );
 void	menuinit( void );
 void	cominit( void );
 void	userinit( userrec_t *u );
 void	plugininit( void );
 void	mciinit( void );
-int     initdata( void );
+int     initdata(char *cf);
 
 /* logging.c - Logging-related functionality */
 int		openlog( void );

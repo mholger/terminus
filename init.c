@@ -12,7 +12,7 @@
 
 #include "vars.h"
 
-void configinit( void )
+void configinit( char *cf )
 {
 	configrec_t t;
 	
@@ -31,8 +31,8 @@ void configinit( void )
 	
 	cfg = t;
 
-	if(exists("config.dat")) {
-		loadconfig();
+	if(exists(cf)) {
+		loadconfig(cf);
 	}
 }
 
@@ -265,7 +265,7 @@ void plugininit( void )
 	}
 }
 
-int initdata( void )
+int initdata(char *cf)
 {
     prompt("BBS Name:       ", cfg.bbsname, sizeof(cfg.bbsname), 30);
     prompt("Sysop Name:     ", cfg.sysop, sizeof(cfg.sysop), 30);
@@ -313,6 +313,6 @@ int initdata( void )
 	// Read cfg.menu
     prompt("Initial Menu:   ", cfg.menu, sizeof(cfg.menu), 30);
 
-    saveconfig();
+    saveconfig(cf);
     return(0);
 }
