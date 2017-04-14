@@ -172,7 +172,7 @@ int login( void )
         logger( 9, "login(): '%s' '%s'", un, up );
 	} while( !(authenticated = checkpass( up, u.password )) && npcount < 3 );
 
-	if( !authenticated )
+	if( usernum <= 0 && !authenticated )
 	{
 		pnl();
 		outstrnl( strings[S_MSG_SORRY_BYE] );
