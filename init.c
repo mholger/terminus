@@ -318,7 +318,8 @@ int initdata(char *cf)
 	// Read cfg.menu
     prompt("Initial Menu:   ", cfg.menu, sizeof(cfg.menu), 30);
 
-    prompt("Timeout:        ", timeout, sizeof(int), 30);
+    sprintf(timeout, "%i", cfg.timeout);
+    prompt("Timeout:        ", timeout, 5, 30);
     cfg.timeout = atoi(timeout);
 
     saveconfig(cf);
