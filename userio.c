@@ -715,5 +715,8 @@ void rawkey( int argc, char **argv )
 
 void timeout(void)
 {
-	bbsexit(999);
+    if (!outfile("timeout")) {
+        outstr(strings[S_MSG_TIMEOUT]);
+    }
+	bbsexit(0);
 }

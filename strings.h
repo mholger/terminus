@@ -47,6 +47,7 @@ char strings[MAXSTRINGS][512] = {
 	"Birthday: ", // S_PROMPT_NEWUSER_BIRTHDAY
 	"I'm sorry, but that's not ok.  Goodbye.", // S_MSG_SORRY_BYE,
 	"Invalid Username, try again.", // S_MSG_BADUSER,
+    "|NLBoooorrrring....Call back when you're fun again, 'k?|NL|NL", // S_MSG_TIMEOUT,
 	"\0",
 };
 
@@ -90,6 +91,7 @@ enum _string_index {
 	S_PROMPT_NEWUSER_BIRTHDAY,
 	S_MSG_SORRY_BYE,
 	S_MSG_BADUSER,
+    S_MSG_TIMEOUT,
 };
 
 #endif // __STRINGS_H
