@@ -97,7 +97,7 @@ int finduser( char *uname )
         logger( 6, "finduser(%s) Loading #%i...", uname, un );
 		ok = loaduser( un, &u );
 		logger( 6, "finduser(%s) Loaded [%s]", uname, u.username );
-		if( !strcmp( uname, u.username ))
+		if( !strcasecmp( uname, u.username ))
 		{
 			logger( 5, "finduser(%s)->[%i]", uname, u.userid );
 			return( u.userid );
